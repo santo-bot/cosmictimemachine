@@ -1,108 +1,79 @@
-import 'package:cosmictimemachine/services/api_service.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:cosmictimemachine/pages/JamesWebPage.dart';
+import 'package:cosmictimemachine/pages/TimetravelerPage.dart';
+import 'package:cosmictimemachine/pages/loginpage.dart';
+import 'package:cosmictimemachine/pages/signuppage.dart';
+import 'package:cosmictimemachine/pages/solarsystemPage.dart';
+import 'package:cosmictimemachine/snippets/buttons/getstartedbtn.dart';
+import 'package:cosmictimemachine/snippets/buttons/homecontainer.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
-class HomePage extends StatefulWidget {
-  @override
-  State<HomePage> createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-  DateTime selectedDate = DateTime.now();
-  TextEditingController coordinatesController = TextEditingController();
-  TextEditingController messageController = TextEditingController();
-  TextEditingController nameController = TextEditingController();
-
-  Map<String, dynamic>? nasaData;
-  bool loading = false;
-
-  _pickDate() async {
-    final date = await showDatePicker(
-      context: context,
-      initialDate: selectedDate,
-      firstDate: DateTime(1900),
-      lastDate: DateTime.now(),
-    );
-    if (date != null) {
-      setState(() => selectedDate = date);
-    }
-  }
-
-  _fetchImage() async {
-    if (coordinatesController.text.isEmpty) return;
-    setState(() => loading = true);
-    try {
-      final data = await ApiService.fetchNasaImage(
-        DateFormat('yyyy-MM-dd').format(selectedDate),
-        coordinatesController.text,
-      );
-      setState(() => nasaData = data);
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.toString())));
-    }
-    setState(() => loading = false);
-  }
-
-  _postMessage() async {
-    if (messageController.text.isEmpty || nameController.text.isEmpty) return;
-    try {
-      await ApiService.postMessage(
-        nameController.text,
-        messageController.text,
-        DateFormat('yyyy-MM-dd').format(selectedDate),
-        coordinatesController.text,
-      );
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Message sent!")));
-      messageController.clear();
-      nameController.clear();
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.toString())));
-    }
-  }
+class HomePage extends StatelessWidget {
+  const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: ListView(
-          children: [
-            TextField(
-              controller: nameController,
-              decoration: InputDecoration(labelText: "Your Name"),
-            ),
-            TextField(
-              controller: coordinatesController,
-              decoration: InputDecoration(labelText: "Sky Coordinates (RA, DEC)"),
-            ),
-            SizedBox(height: 10),
-            Row(
-              children: [
-                Text("Selected Date: ${DateFormat('yyyy-MM-dd').format(selectedDate)}"),
-                Spacer(),
-                ElevatedButton(onPressed: _pickDate, child: Text("Pick Date")),
-              ],
-            ),
-            SizedBox(height: 10),
-            ElevatedButton(onPressed: _fetchImage, child: Text("Fetch NASA Image")),
-            SizedBox(height: 20),
-            if (loading) Center(child: CircularProgressIndicator()),
-            if (nasaData != null) ...[
-              Image.network(nasaData!['url'] ?? ''),
-              SizedBox(height: 10),
-              Text("Title: ${nasaData!['title'] ?? 'Unknown'}"),
-              Text("Explanation: ${nasaData!['explanation'] ?? ''}"),
-              Text("Coordinates: ${nasaData!['coordinates']}"),
+      body: Container(
+        // Background Image
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("assets/images/homebg.png"),
+            fit: BoxFit.cover,
+
+          ),
+        ),
+
+        // Transparent overlay for better visibility (optional)
+        child: Container(
+          color: Colors.black.withOpacity(0.3), // dark overlay
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              // Title Text
+
+              SizedBox(height: 30),
+
+              // Get Started Button
+              Center(
+                child: Column(
+                  children: [
+                    homecontainer(imagePath: 'assets/images/solorsystencont.png', onTap: () {  Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>  solarsystemPage(),
+                        ),);
+                      }, titleText: 'SOLAR', subtitleText: 'SYSTEM',),
+
+                    SizedBox(height: 30),
+                    homecontainer(imagePath: 'assets/images/james.png', onTap: () { Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>  JameswebPage(),
+                      ),);
+
+                      }, titleText: 'JAMES', subtitleText: 'WEBB',),
+
+                    SizedBox(height: 30),
+                    homecontainer(imagePath: 'assets/images/humble.png', onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>  JameswebPage(),
+                        ),);
+                    }, titleText: 'HUBBLE', subtitleText: '',),
+                    SizedBox(height: 30),
+                  ],
+                ),
+              ),
+
+
+
+
+
+              const SizedBox(height: 100),
             ],
-            SizedBox(height: 20),
-            TextField(
-              controller: messageController,
-              decoration: InputDecoration(labelText: "Message to the Past"),
-            ),
-            SizedBox(height: 10),
-            ElevatedButton(onPressed: _postMessage, child: Text("Send Message")),
-          ],
+          ),
         ),
       ),
     );

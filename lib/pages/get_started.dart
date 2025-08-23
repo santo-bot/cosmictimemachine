@@ -1,4 +1,4 @@
-import 'package:cosmictimemachine/pages/HomePage.dart';
+import 'package:cosmictimemachine/pages/TimetravelerPage.dart';
 import 'package:cosmictimemachine/pages/loginpage.dart';
 import 'package:cosmictimemachine/pages/signuppage.dart';
 import 'package:cosmictimemachine/snippets/buttons/getstartedbtn.dart';

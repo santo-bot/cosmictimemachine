@@ -1,14 +1,15 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class AccountTxtField extends StatelessWidget {
   final String hintText;
   final bool isPassword;
+  final TextEditingController? controller; // Added controller
 
   const AccountTxtField({
     super.key,
     required this.hintText,
     this.isPassword = false,
+    this.controller, // Optional controller
   });
 
   @override
@@ -18,6 +19,7 @@ class AccountTxtField extends StatelessWidget {
         width: 312, // full width
         height: 47,
         child: TextField(
+          controller: controller, // assign controller
           obscureText: isPassword,
           style: const TextStyle(color: Colors.white),
           decoration: InputDecoration(

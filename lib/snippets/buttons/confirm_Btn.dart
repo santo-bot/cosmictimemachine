@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 
 class Confirm_Btn extends StatelessWidget {
   final String text;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed; // for sync
+  final Future<void> Function()? onPressedAsync; // for async
   final Color color;
   final Color textColor;
   final double radius;
@@ -12,7 +13,8 @@ class Confirm_Btn extends StatelessWidget {
   const Confirm_Btn({
     super.key,
     required this.text,
-    required this.onPressed,
+    this.onPressed,
+    this.onPressedAsync,
     Color? color,
     this.textColor = Colors.white,
     this.radius = 15,
@@ -33,7 +35,11 @@ class Confirm_Btn extends StatelessWidget {
           ),
           elevation: 4,
         ),
-        onPressed: onPressed,
+        onPressed: onPressedAsync != null
+            ? () async {
+          await onPressedAsync!();
+        }
+            : onPressed,
         child: Text(
           text,
           style: TextStyle(

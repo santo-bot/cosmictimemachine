@@ -1,4 +1,4 @@
-import 'package:cosmictimemachine/pages/HomePage.dart';
+import 'package:cosmictimemachine/pages/TimetravelerPage.dart';
 import 'package:cosmictimemachine/pages/get_started.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';

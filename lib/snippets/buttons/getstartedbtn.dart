@@ -7,7 +7,6 @@ class Startedbtn extends StatelessWidget {
   final Color textColor;
   final double radius;
   final double height;
-  final double width;
 
   const Startedbtn({
     super.key,
@@ -17,13 +16,11 @@ class Startedbtn extends StatelessWidget {
     this.textColor = Colors.white,
     this.radius = 15,
     this.height = 57,
-    this.width = 228,
   }) : color = color ?? const Color.fromRGBO(0, 100, 150, 0.6);
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: width,
       height: height,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
